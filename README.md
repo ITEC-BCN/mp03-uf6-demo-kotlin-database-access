@@ -18,10 +18,18 @@ IntelliJ projecte amb **Gradle** SDK 20
 Per tal d'usar les classes esmentades anteriorment, és necessari incorporar les següents dependencies a dins del fitxer de configuració de gradle [build.gradle.kts](build.gradle.kts)
 
 ## SQLite
-![SQLite-plugin.png](images/SQLite-plugin.png)
+```code
+dependencies {
+    implementation("org.xerial:sqlite-jdbc:3.36.0.3")
+}
+```
 
 ## PostgreSQL
-![PostgreSQL-plugin.png](images/PostgreSQL-plugin.png)
+```code
+dependencies {
+    implementation("org.postgresql:postgresql:42.6.0")
+}
+```
 
 > [!NOTE]
 > Aquest projecte ja ho porta incorporat i no cal afegir-ho de nou
