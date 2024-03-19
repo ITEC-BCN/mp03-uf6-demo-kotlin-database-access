@@ -1,5 +1,6 @@
-package org.example
+package org.example.controllers
 
+import org.example.*
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
@@ -27,7 +28,7 @@ fun main() {
         // Print the results through terminal
         printData(resultData)
 
-        exit = readBoolean(CYAN_BACKGROUND+"Write true to exit the program, false to execute another query"+ RESET, "Please write true or false")
+        exit = readBoolean(CYAN_BACKGROUND +"Write true to exit the program, false to execute another query"+ RESET, "Please write true or false")
     }while(!exit)
 }
 
@@ -93,10 +94,21 @@ fun showDBTables(db: Connection?){
     var tableCounter: Int = 1
 
     if (rs != null) {
-        println("Available tables to be consulted in the given database: ")
+        println(GREEN_BACKGROUND + "Available tables to be consulted in the given database:" + RESET + "\n")
         while (rs.next()) {
-            print("\t" + tableCounter + " -> ")
-            println(rs.getString(3))
+            val tableName: String = rs.getString(3)
+
+            if (tableCounter % 2 == 0) {
+                print(CYAN + "\t" + tableCounter + " -> ")
+                println(tableName)
+                printColumnNames(db, tableName)
+            }else{
+                print(BLUE + "\t" + tableCounter + " -> ")
+                println(tableName)
+                printColumnNames(db, tableName)
+            }
+
+            println(RESET)
             tableCounter++
         }
         println()
@@ -105,5 +117,17 @@ fun showDBTables(db: Connection?){
     }
     if (rs != null) {
         rs.close()
+    }
+}
+
+fun printColumnNames(db: Connection, tableName: String) {
+    val st: Statement? = db?.createStatement()
+    val columns: ResultSet? = st?.executeQuery("SELECT column_name FROM INFORMATION_SCHEMA.columns WHERE table_name = '" + tableName + "' AND table_name not like 'pg_%' AND table_name not like 'sql_%'")
+
+    if (columns != null) {
+        while (columns.next()) {
+            val columnName: String = columns.getString(1)
+            println("\t\t\t" + columnName)
+        }
     }
 }

@@ -1,5 +1,7 @@
-package org.example
+package org.example.controllers
 
+import org.example.readInt
+import org.example.readSentence
 import java.sql.DriverManager
 import java.sql.ResultSet
 import java.sql.Statement
