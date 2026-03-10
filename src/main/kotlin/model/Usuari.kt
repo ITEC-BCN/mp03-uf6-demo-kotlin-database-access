@@ -1,6 +1,6 @@
 package model
 
-class Usuari {
+public class Usuari {
     private var id: Int
     private var nom: String
     private var nivell: NivellUsuari
@@ -11,8 +11,19 @@ class Usuari {
         this.nivell = nivell
     }
 
-    override fun toString(): String {
-        return "Usuari(id=$id, nom='$nom', nivell='$nivell')"
+    public fun getId(): Int{
+        return this.id
     }
 
+    public fun getNom(): String{
+        return this.nom
+    }
+
+    public fun getNivell(): String{
+        return this.nivell.valor
+    }
+
+    override public fun toString(): String {
+        return "[usuari@ id: $id -> '$nom' és '$nivell']"
+    }
 }
