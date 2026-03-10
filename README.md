@@ -8,7 +8,7 @@ Aquest projecte de IntelliJ conté una base de dades de *SQL lite* en format .db
 El projecte segueix l'arquitectura de desenvolupament per capes segons el **patró MVC** per a tenir una Clean Architecture.
 Així, tenim el codi organitzat per capes representat amb packages on cadascuna d'elles té una responsabilitat i s'intenta eliminar la interdependència entre elles.
 
-> [!INFO]
+> [!TIP]
 > Això permetria crear una nova view usant GUI i la resta del codi del projecte no es veuria afectat i seguiria funcionant igualment.
 
 ---
