@@ -38,9 +38,14 @@ package "Controller" {
 package "Model" {
 
     class Usuari {
-        id : Int
-        nom : String
-        nivell : NivellUsuari
+        -id : Int
+        -nom : String
+        -nivell : NivellUsuari
+        +constructor(Int, String, NivellUsuari): Usuari
+        +getId(): Int
+        +getNom(): String
+        +getNivell(): String
+        +toString(): String
     }
 
     enum NivellUsuari {
