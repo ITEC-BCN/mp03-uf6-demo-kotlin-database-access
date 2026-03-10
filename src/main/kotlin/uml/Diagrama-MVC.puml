@@ -1,0 +1,92 @@
+@startuml
+allowmixing
+
+left to right direction
+
+title Arquitectura MVC + DAO (Kotlin + SQLite)
+
+actor "Usuari" as User
+
+package "View" {
+
+    class TerminalView {
+        +menuSQLite()
+        --
+        -mostrarUsuaris(controller)
+        -upsertUsuari(controller, id, update)
+        -modificarUsuari(controller)
+        -eliminarUsuari(controller)
+        -esborrarLlista(controller)
+    }
+
+}
+
+package "Controller" {
+
+    class SQLiteController {
+        +getUsuaris() : List<Usuari>
+        +idsUsuari() : List<Int>
+        +getUsuariById(id) : Usuari?
+        +inserirUsuari(Usuari) : Int
+        +modificarUsuari(Usuari) : Int
+        +eliminarUsuari(Usuari) : Int
+        +eliminarLlista() : Int
+    }
+
+}
+
+package "Model" {
+
+    class Usuari {
+        id : Int
+        nom : String
+        nivell : NivellUsuari
+    }
+
+    enum NivellUsuari {
+        DOCENT
+        COORDINADOR
+        DIRECTIU
+        --
+        +fromString(valor)
+    }
+
+}
+
+package "DAO" {
+
+    class UsuariDao {
+        +getAllUsers() : List<Usuari>
+        +getUserIdList() : List<Int>
+        +getUserById(id) : Usuari?
+        +insertUser(Usuari) : Int
+        +updateUser(Usuari) : Int
+        +deleteUser(Usuari) : Int
+        +deleteAll() : Int
+    }
+
+}
+
+package "Database" {
+
+    class DatabaseManager {
+        +connection : Connection
+    }
+
+}
+
+database "SQLite DB\nusuaris.db" as DB
+
+
+User --> TerminalView : interactua
+
+TerminalView --> SQLiteController : crida accions
+SQLiteController --> UsuariDao : gestió dades
+
+UsuariDao --> DatabaseManager : obté connexió JDBC
+DatabaseManager --> DB : accés SQLite
+
+UsuariDao --> Usuari : crea objectes
+Usuari --> NivellUsuari
+
+@enduml

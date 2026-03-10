@@ -1,4 +1,9 @@
 # Contingut
+## Diagrama Model-Vista-Controlador
+A continuació podem veure un diagrama de les capes que intervenen en el patró de desenvolupament MVC:
+
+![mvc](img/Diagrama-MVC.png)
+
 ## SQLite local
 Aquest projecte de IntelliJ conté una base de dades de *SQL lite* en format .db dins de la carpeta [src/databases](data) a la qual hi accedirem al [SQLiteDemo.kt](src/main/kotlin/controllers/SQLiteDemo.kt) usant les següents llibreries de kotlin:
 - **DriverManager**: Classe de la qual usarem el mètode static *getConnection()* per tal de definir la connection string que ens permetrà apuntar i connectar-nos al fitxer de base de dades.
@@ -15,6 +20,9 @@ Així, tenim el codi organitzat per capes representat amb packages on cadascuna 
 
 ## PostgreSQL remot
 També conté un exemple per a connectar-se a una BD de PostgreSQL externa que podeu trobar a [PostgreSQLElephantDemo.kt](src/main/kotlin/controllers/PostgreSQLElephantDemo.kt)
+
+> [!NOTE]
+> La demo amb PostgreSQL remota només està disponible a la branca secundària del repositori.
 
 ---
 ---
