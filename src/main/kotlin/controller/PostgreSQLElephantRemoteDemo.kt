@@ -7,7 +7,10 @@ import java.sql.ResultSet
 import java.sql.Statement
 
 fun main() {
-    val url = "jdbc:postgresql://dumbo.db.elephantsql.com/"
+    //val url = "jdbc:postgresql://dumbo.db.elephantsql.com/"
+
+    val url = "jdbc:postgresql://postgres:Kilian_007!@db.mpljfzuoedrvhksxhdvc.supabase.co:5432/postgres"
+    // postgresql://postgres:[YOUR-PASSWORD]@db.mpljfzuoedrvhksxhdvc.supabase.co:5432/postgres
     // Elephant uses the username to point to a specific database
     val username = "ajpkfrpe"
     val password = "VeRs0MV7dDAR1G8OEQikuUq7ZbxpuWgj"
