@@ -10,13 +10,14 @@ actor "Usuari" as User
 package "View" {
 
     class TerminalView {
+        +constructor(controller: SQLiteController)
         +menuSQLite()
         --
-        -mostrarUsuaris(controller)
-        -upsertUsuari(controller, id, update)
-        -modificarUsuari(controller)
-        -eliminarUsuari(controller)
-        -esborrarLlista(controller)
+        -mostrarUsuaris()
+        -upsertUsuari(id: Int, update: Boolean)
+        -modificarUsuari()
+        -eliminarUsuari()
+        -esborrarLlista()
     }
 
 }
@@ -86,7 +87,9 @@ database "SQLite DB\nusuaris.db" as DB
 User --> TerminalView : interactua
 
 TerminalView --> SQLiteController : crida accions
+TerminalView <-- SQLiteController : retorna dades
 SQLiteController --> UsuariDao : gestió dades
+SQLiteController <-- UsuariDao : retorna dades
 
 UsuariDao --> DatabaseManager : obté connexió JDBC
 DatabaseManager --> DB : accés SQLite
