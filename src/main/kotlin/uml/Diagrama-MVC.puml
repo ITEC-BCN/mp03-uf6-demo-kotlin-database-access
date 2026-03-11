@@ -54,7 +54,7 @@ package "Model" {
         COORDINADOR
         DIRECTIU
         --
-        +fromString(valor)
+        +fromString(valor): NivellUsuari
     }
 
 }
@@ -95,6 +95,6 @@ UsuariDao --> DatabaseManager : obté connexió JDBC
 DatabaseManager --> DB : accés SQLite
 
 UsuariDao --> Usuari : crea objectes
-Usuari --> NivellUsuari
+Usuari "n" *-- "1" NivellUsuari: té
 
 @enduml
