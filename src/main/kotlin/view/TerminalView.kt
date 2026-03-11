@@ -7,14 +7,17 @@ import org.example.readInt
 import org.example.readSentence
 
 class TerminalView{
+    private val usuarisController: SQLiteController
+
+    constructor(usuarisController: SQLiteController){
+        this.usuarisController = usuarisController
+    }
 
     /**
      * Funció que mostra el menú principal a la vista de terminal
      * @author RIS
      */
     public fun menuSQLite() {
-        val usuarisController: SQLiteController = SQLiteController()
-
         do {
             println("############")
             println("### MENÚ ###")
@@ -31,11 +34,11 @@ class TerminalView{
             )
             val opcio = readInt("Tria una opció", "Ha de ser numèric", "Les opcions son entre 0 i 5", 0, 5)
             when (opcio) {
-                1 -> mostrarUsuaris(usuarisController)
-                2 -> upsertUsuari(usuarisController)
-                3 -> modificarUsuari(usuarisController)
-                4 -> eliminarUsuari(usuarisController)
-                5 -> esborrarLlista(usuarisController)
+                1 -> mostrarUsuaris()
+                2 -> upsertUsuari()
+                3 -> modificarUsuari()
+                4 -> eliminarUsuari()
+                5 -> esborrarLlista()
                 0 -> println("A reveure!")
             }
         } while (opcio != 0)
@@ -46,7 +49,7 @@ class TerminalView{
      * @param usuarisController reb una instància de SQLiteController per poder accedir als mètodes del controlador d'Usuaris
      * @author RIS
      */
-    private fun mostrarUsuaris(usuarisController: SQLiteController) {
+    private fun mostrarUsuaris() {
         // Recuperem tots els usuaris de la BD cridant el mètode getUsuaris() del Controller
         val llistatUsuaris: List<Usuari> = usuarisController.getUsuaris()
 
@@ -71,7 +74,7 @@ class TerminalView{
      * @param update és un paràmetre opcional de tipus Boolean. Per defecte és false i, per tant, es fa INSERT
      * @author RIS
      */
-    private fun upsertUsuari(usuarisController: SQLiteController, id: Int = -1, update: Boolean = false) {
+    private fun upsertUsuari(id: Int = -1, update: Boolean = false) {
         println("#####################")
         println("### NOU USUARI ###")
         println("#####################")
@@ -124,14 +127,14 @@ class TerminalView{
      * @param usuarisController reb una instància de SQLiteController per poder accedir als mètodes del controlador d'Usuaris
      * @author RIS
      */
-    private fun modificarUsuari(usuarisController: SQLiteController) {
+    private fun modificarUsuari() {
         val llistatIds: List<Int> = usuarisController.idsUsuari()
         var nouIdUsuari: Int = -1
 
         if (llistatIds.isEmpty()) {
             println("Actualment no hi ha cap usuari@ a la BD, es procedirà a crear-ne un de nou...")
             // Aprofitem el mateix mètode de crearUsuari que ja hem definit abans
-            upsertUsuari(usuarisController)
+            upsertUsuari()
         } else {
             println("Actualment hi ha els següents ids d'usuari a dins de la BD:")
             for (id in llistatIds) {
@@ -150,11 +153,11 @@ class TerminalView{
                 println("L'usuari@ a modificar és...")
                 println(usuariModificar)
                 // Cridem a la funció upsert amb el modificador update = true per tal de que executi un UPDATE i no un INSERT
-                upsertUsuari(usuarisController, nouIdUsuari, true)
+                upsertUsuari( nouIdUsuari, true)
             } else {
                 println("Id d'usuari@ no trobat, es procedirà a crear un usuari@ nou amb id = $nouIdUsuari ...")
                 // Aprofitem el mateix mètode de crearUsuari que ja hem definit abans passant-li l'id que s'ha inserit
-                upsertUsuari(usuarisController, nouIdUsuari)
+                upsertUsuari( nouIdUsuari)
             }
         }
     }
@@ -164,7 +167,7 @@ class TerminalView{
      * @param usuarisController Controlador que permet gestionar els estats dels usuaris
      * @author RIS
      */
-    private fun eliminarUsuari(usuarisController: SQLiteController) {
+    private fun eliminarUsuari() {
         val llistatIds: List<Int> = usuarisController.idsUsuari()
         var idUsuariEliminar: Int = -1
 
@@ -201,7 +204,7 @@ class TerminalView{
      * @param usuarisController Controlador que permet gestionar els estats dels usuaris
      * @author RIS
      */
-    private fun esborrarLlista(usuarisController: SQLiteController) {
+    private fun esborrarLlista() {
         val llistatIds: List<Int> = usuarisController.idsUsuari()
 
         if (llistatIds.isEmpty()){

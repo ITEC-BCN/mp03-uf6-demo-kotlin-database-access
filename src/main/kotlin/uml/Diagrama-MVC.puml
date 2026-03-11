@@ -41,7 +41,7 @@ package "Model" {
         -id : Int
         -nom : String
         -nivell : NivellUsuari
-        +constructor(Int, String, NivellUsuari): Usuari
+        +constructor(Int, String, NivellUsuari)
         +getId(): Int
         +getNom(): String
         +getNivell(): String
