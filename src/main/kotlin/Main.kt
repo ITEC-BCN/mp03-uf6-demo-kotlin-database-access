@@ -1,20 +1,23 @@
+import dao.IUsuariDao
 import dao.UsuariDao
 import database.DatabaseManager
 import database.SupabaseManager
 import org.example.controllers.UsuariController
 import view.TerminalView
+import java.sql.Connection
 
 fun main() {
-    // Instanciem els DAO local i remot
-    val usuariDaoLocal: UsuariDao = UsuariDao(DatabaseManager.connection)
-    val usuariDaoRemot: UsuariDao = UsuariDao(SupabaseManager.connection)
+    // 1. Definim les connexions a BD local i remota
+    val conLocal: Connection = DatabaseManager.connection
+    val conRemot: Connection = SupabaseManager.connection
 
-    // Instanciem el UsuarisController amb la font de dades que vulguem
-    val usuariController: UsuariController = UsuariController(usuariDaoRemot)
+    // 2. Instanciem el DAO amb la connexió desitjada
+    val dao: IUsuariDao = UsuariDao(conRemot)
 
-    // Creem l'objecte de la vista del terminal
+    // 3. Creem el controlador d'usuaris passant-li el dao creat
+    val usuariController: UsuariController = UsuariController(dao)
+
+    // 4. Creem i iniciem la vista
     val VISTA_TERMINAL: TerminalView = TerminalView()
-
-    // Executar la demo de BD en local
     VISTA_TERMINAL.menuPrincipal(usuariController)
 }

@@ -1,0 +1,116 @@
+@startuml
+allowmixing
+
+left to right direction
+
+title Arquitectura Completa MVC + DAO
+
+actor "Usuari" as User
+
+package "View" {
+    class TerminalView {
+        +mostrarMenuPrincipal(controller: UsuariController)
+        --
+        -mostrarUsuaris(controller: UsuariController)
+        -upsertUsuari(controller: UsuariController)
+        -modificarUsuari(controller: UsuariController)
+        -eliminarUsuari(controller: UsuariController)
+        -esborrarLlista(controller: UsuariController)
+    }
+}
+
+package "Controller" {
+    class UsuariController {
+        -usuariDao: IUsuariDao
+        --
+        +UsuariController(dao: IUsuariDao)
+        +getUsuaris() : List<Usuari>
+        +idsUsuari() : List<Int>
+        +getUsuariById(id: Int) : Usuari?
+        +inserirUsuari(u: Usuari) : Int
+        +modificarUsuari(u: Usuari) : Int
+        +eliminarUsuari(u: Usuari) : Int
+        +eliminarLlista() : Int
+    }
+}
+
+package "Model & Interface" {
+    interface IUsuariDao <<interface>> {
+        +getAllUsers() : List<Usuari>
+        +getUserIdList() : List<Int>
+        +getUserById(id: Int) : Usuari?
+        +insertUser(u: Usuari) : Int
+        +updateUser(u: Usuari) : Int
+        +deleteUser(u: Usuari) : Int
+        +deleteAll() : Int
+    }
+
+    class Usuari {
+        -id : Int
+        -nom : String
+        -nivell : NivellUsuari
+        --
+        +getId(): Int
+        +getNom(): String
+        +getNivell(): NivellUsuari
+    }
+
+    enum NivellUsuari {
+        DOCENT, COORDINADOR, DIRECTIU
+        --
+        +fromString(valor: String): NivellUsuari
+    }
+}
+
+package "DAO Implementation" {
+    class UsuariDao {
+        -connection: Connection
+        --
+        +UsuariDao(c: Connection)
+        +getAllUsers() : List<Usuari>
+        +getUserIdList() : List<Int>
+        +getUserById(id: Int) : Usuari?
+        +insertUser(u: Usuari) : Int
+        +updateUser(u: Usuari) : Int
+        +deleteUser(u: Usuari) : Int
+        +deleteAll() : Int
+    }
+}
+
+package "Database" {
+
+    class DatabaseManager << (O, #A9E4FF) >> {
+        +connection : Connection
+    }
+
+    class SupabaseManager << (O, #A9E4FF) >> {
+        +connection : Connection
+        --
+        -URL: String
+        -USER: String
+        -PASS: String
+        -PORT: String
+    }
+}
+
+database "SQLite (.db)" as SQLite
+database "Supabase (Postgres)" as Supabase
+
+file "secrets.properties" as secrets
+
+' Relacions
+User --> TerminalView : interactua
+TerminalView --> UsuariController : crida accions
+UsuariController o-- IUsuariDao : injecció
+
+UsuariDao ..|> IUsuariDao : implementa
+UsuariDao --> Usuari : crea
+Usuari "n" *-- "1" NivellUsuari : és
+
+DatabaseManager --> SQLite
+SupabaseManager --> Supabase
+SupabaseManager ..> secrets : llegeix dades
+UsuariDao --> SupabaseManager : rep connexió
+UsuariDao --> DatabaseManager : rep connexió
+
+@enduml

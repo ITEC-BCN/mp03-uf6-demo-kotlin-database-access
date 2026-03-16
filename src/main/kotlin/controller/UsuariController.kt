@@ -1,31 +1,25 @@
 package org.example.controllers
 
+import dao.IUsuariDao
 import dao.UsuariDao
 import model.Usuari
 
 /*
 TODO:
-1. Definir secrets.properties per les credencials de Supabase (pot involucrar dependencies de build.gradle.kts)
-2. Commit i push
-3. Crear interface IUsuariDao que incorpori els mètodes CRUD a implementar a UsuariDao ?
-4. Adaptar UsuariController per tal de que rebi injecció de la dependència de proveïdor d'usuaris  'UsuariDao' instanciat amb connexió local o remota
-5. Al Main definir si UsuariController usa local o remot
 6. A dins de UsuariDao, afegir el tema de use per tancar bé les connexions o usar try-catch-finally?
 7. Permetre que es pugui treballar usant dades remotes o locals si no hi ha connexió?
  */
 
-public class UsuariController {
-    private val usuariDao: UsuariDao
+public class UsuariController{
+    private val usuariDao: IUsuariDao
 
     /**
      * Constructor de la classe que rep injecció de dependències
      * amb el paràmetre usuariDao que vindrà definit des del Main i ens indica si
      * s'usarà una connexió de BD local o remota
-     * Al Main podem crear més d'un UsuariController i en podem tenir un per gestionar
-     * les dades en local i un altre en remot
      * @author RIS
      */
-    constructor(usuariDao: UsuariDao){
+    constructor(usuariDao: IUsuariDao) {
         this.usuariDao = usuariDao
     }
 

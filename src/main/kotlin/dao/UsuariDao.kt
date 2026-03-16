@@ -5,7 +5,7 @@ import model.Usuari
 import java.sql.Connection
 import java.sql.ResultSet
 
-public class UsuariDao {
+public class UsuariDao: IUsuariDao {
     private val databaseConnection: Connection
 
     constructor (databaseSource: Connection){
@@ -17,7 +17,7 @@ public class UsuariDao {
      * @return Retorna el llistat d'usuaris existents a la BD
      * @author RIS
      */
-    public fun getAllUsers(): List<Usuari> {
+    public override fun getAllUsers(): List<Usuari> {
         val usuaris: MutableList<Usuari> = mutableListOf<Usuari>()
 
         // Definim la consulta SQL que volem llançar a la BD
@@ -57,7 +57,7 @@ public class UsuariDao {
      * @return llistat d'ids que hi ha a la BD
      * @author RIS
      */
-    public fun getUserIdList(): List<Int>{
+    public override fun getUserIdList(): List<Int>{
         val userIds: MutableList<Int> = mutableListOf<Int>()
 
         // Definim la consulta SQL que volem llançar a la BD
@@ -87,7 +87,7 @@ public class UsuariDao {
      * @param id de tipus Int
      * @author RIS
      */
-    public fun getUserById(id: Int): Usuari?{
+    public override fun getUserById(id: Int): Usuari?{
         var user: Usuari? = null
 
         // Definim la consulta SQL que volem llançar a la BD
@@ -119,7 +119,7 @@ public class UsuariDao {
      * @param usuari de tipus Usuari amb les dades d'un usuari nou
      * @author RIS
      */
-    public fun insertUser(usuari: Usuari): Int{
+    public override fun insertUser(usuari: Usuari): Int{
         var rowCount: Int = 0
         val sql = "INSERT INTO usuari (usu_id, usu_nom, usu_nivell) VALUES (?, ?, ?)"
 
@@ -142,7 +142,7 @@ public class UsuariDao {
      * @return rowcount de files afectades
      * @author RIS
      */
-    public fun updateUser(usuari: Usuari): Int{
+    public override fun updateUser(usuari: Usuari): Int{
         var rowCount: Int = 0
         val sql = "UPDATE usuari SET usu_nom = ?, usu_nivell = ? WHERE usu_id = ?"
 
@@ -165,7 +165,7 @@ public class UsuariDao {
      * @return rowcount de files afectades
      * @author RIS
      */
-    public fun deleteUser(usuari: Usuari): Int {
+    public override fun deleteUser(usuari: Usuari): Int {
         var rowCount: Int
 
         val sql = "DELETE FROM usuari WHERE usu_id = ?"
@@ -185,7 +185,7 @@ public class UsuariDao {
      * @return el nombre de files afectades
      * @author RIS
      */
-    public fun deleteAll(): Int {
+    public override fun deleteAll(): Int {
         var rowCount: Int
 
         val sql = "DELETE FROM usuari"
