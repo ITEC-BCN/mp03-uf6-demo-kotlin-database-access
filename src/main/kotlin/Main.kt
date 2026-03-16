@@ -5,12 +5,16 @@ import org.example.controllers.UsuariController
 import view.TerminalView
 
 fun main() {
-    val VISTA_TERMINAL: TerminalView = TerminalView()
+    // Instanciem els DAO local i remot
     val usuariDaoLocal: UsuariDao = UsuariDao(DatabaseManager.connection)
     val usuariDaoRemot: UsuariDao = UsuariDao(SupabaseManager.connection)
 
-    val usuariControllerRemot: UsuariController = UsuariController(usuariDaoRemot)
+    // Instanciem el UsuarisController amb la font de dades que vulguem
+    val usuariController: UsuariController = UsuariController(usuariDaoRemot)
+
+    // Creem l'objecte de la vista del terminal
+    val VISTA_TERMINAL: TerminalView = TerminalView()
 
     // Executar la demo de BD en local
-    VISTA_TERMINAL.menuSQLite(usuariControllerRemot)
+    VISTA_TERMINAL.menuPrincipal(usuariController)
 }

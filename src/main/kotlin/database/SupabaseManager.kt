@@ -22,18 +22,9 @@ object SupabaseManager {
     private val PASS = System.getProperty("SUPABASE_PASS")
     private val PORT = System.getProperty("SUPABASE_PORT")
 
-    /*
-    private const val URL = "jdbc:postgresql://aws-1-eu-west-2.pooler.supabase.com/postgres"
-    private const val USER = "postgres.mpljfzuoedrvhksxhdvc"
-    private const val PASSWORD = "Yabadumba_007!"
-    private const val PORT = "6543"
-    */
-
-    private var props: Properties = Properties()
-
     // La connexió es crea només un cop, quan es crida per primer cop
     public val connection: Connection by lazy {
-        props = Properties().apply {
+        val props = Properties().apply {
             setProperty("user", USER)
             setProperty("password", PASS)
             setProperty("port", PORT)

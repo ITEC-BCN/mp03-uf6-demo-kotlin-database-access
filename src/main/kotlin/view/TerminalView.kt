@@ -12,7 +12,7 @@ class TerminalView{
      * Funció que mostra el menú principal a la vista de terminal
      * @author RIS
      */
-    public fun menuSQLite(usuarisController: UsuariController) {
+    public fun menuPrincipal(usuarisController: UsuariController) {
 
         do {
             println("############")
