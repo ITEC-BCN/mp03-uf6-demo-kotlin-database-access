@@ -9,11 +9,13 @@ import java.sql.Statement
 fun main() {
     //val url = "jdbc:postgresql://dumbo.db.elephantsql.com/"
 
-    val url = "jdbc:postgresql://postgres:Kilian_007!@db.mpljfzuoedrvhksxhdvc.supabase.co:5432/postgres"
+    // val url = "jdbc:postgresql://db.mpljfzuoedrvhksxhdvc.supabase.co/"
+    //val url = "jdbc:postgresql://db.mpljfzuoedrvhksxhdvc.supabase.co:5432/postgres"
+    val url = "jdbc:postgresql://db.mpljfzuoedrvhksxhdvc.supabase.co:5432/postgres"
     // postgresql://postgres:[YOUR-PASSWORD]@db.mpljfzuoedrvhksxhdvc.supabase.co:5432/postgres
     // Elephant uses the username to point to a specific database
-    val username = "ajpkfrpe"
-    val password = "VeRs0MV7dDAR1G8OEQikuUq7ZbxpuWgj"
+    val username = "postgres" //"ajpkfrpe"
+    val password = "od2dJ6XIYzwgNsSB"// "VeRs0MV7dDAR1G8OEQikuUq7ZbxpuWgj"
 
     var exit: Boolean = false
 
@@ -35,24 +37,21 @@ fun main() {
     }while(!exit)
 }
 
-fun connectToDB(url: String, username: String, password: String): Connection? {
-    // Check if the PostgreSQL driver is installed inside the project. As is a Gradle project, it should be inside the build.gradle.kts file
+fun connectToDB(url: String, username: String, password: String): Connection {
+
     try {
         Class.forName("org.postgresql.Driver")
-    } catch (e: Exception) {
-        println(e)
+    } catch (e: ClassNotFoundException) {
+        throw RuntimeException("PostgreSQL JDBC driver not found", e)
     }
-
-    var db: Connection? = null
 
     try {
-        db = DriverManager.getConnection(url, username, password)
-        println(GREEN_BOLD + "Connection successful" + RESET)
+        val connection = DriverManager.getConnection(url, username, password)
+        println("Connection successful")
+        return connection
     } catch (e: Exception) {
-        println(e)
+        throw RuntimeException("Connection failed: ${e.message}", e)
     }
-
-    return db ?: throw IllegalStateException("Failed to establish database connection")
 }
 
 fun getData(dbConnection: Connection?, query: String): ResultSet? {

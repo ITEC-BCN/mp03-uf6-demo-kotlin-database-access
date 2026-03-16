@@ -1,11 +1,16 @@
 package dao
 
-import database.DatabaseManager
 import model.NivellUsuari
 import model.Usuari
+import java.sql.Connection
 import java.sql.ResultSet
 
-object UsuariDao {
+public class UsuariDao {
+    private val databaseConnection: Connection
+
+    constructor (databaseSource: Connection){
+        this.databaseConnection = databaseSource
+    }
 
     /**
      * Funció que es connecta directament amb la BD usant la connexió definida a la classe DataBaseManager
@@ -19,7 +24,10 @@ object UsuariDao {
         val sql = "SELECT * FROM usuari ORDER BY usu_id ASC"
 
         // Convertim l'String anterior a una sentència SQL executable
-        val stmt = DatabaseManager.connection.createStatement()
+        //val stmt = DatabaseManager.connection.createStatement()
+        //val stmt = SupabaseManager.connection.createStatement()
+        val stmt = databaseConnection.createStatement()
+
         // Executem la sentència SQL creada
         val rs: ResultSet = stmt.executeQuery(sql)
 
@@ -56,7 +64,7 @@ object UsuariDao {
         val sql = "SELECT DISTINCT usu_id FROM usuari ORDER BY usu_id ASC"
 
         // Convertim l'String anterior a una sentència SQL executable
-        val stmt = DatabaseManager.connection.createStatement()
+        val stmt = databaseConnection.createStatement()
         // Executem la sentència SQL creada
         val rs: ResultSet = stmt.executeQuery(sql)
 
@@ -86,7 +94,7 @@ object UsuariDao {
         val sql = "SELECT * FROM usuari WHERE usu_id = $id ORDER BY usu_nom ASC LIMIT 1" // Afegim LIMIT 1 per si de cas hi ha més d'un usuari amb el mateix id
 
         // Convertim l'String anterior a una sentència SQL executable
-        val stmt = DatabaseManager.connection.createStatement()
+        val stmt = databaseConnection.createStatement()
         // Executem la sentència SQL creada
         val rs: ResultSet = stmt.executeQuery(sql)
 
@@ -117,7 +125,7 @@ object UsuariDao {
 
         // Amb la funció prepareStatement() s'eviten els possibles atacs de SQLInjection
         // 'use' tanca automàticament el PreparedStatement
-        DatabaseManager.connection.prepareStatement(sql).use { stmt ->
+        databaseConnection.prepareStatement(sql).use { stmt ->
             stmt.setInt(1, usuari.getId())
             stmt.setString(2, usuari.getNom())
             stmt.setString(3, usuari.getNivell()) // enum a String
@@ -140,7 +148,7 @@ object UsuariDao {
 
         // Amb la funció prepareStatement() s'eviten els possibles atacs de SQLInjection
         // 'use' tanca automàticament el PreparedStatement
-        DatabaseManager.connection.prepareStatement(sql).use { stmt ->
+        databaseConnection.prepareStatement(sql).use { stmt ->
             stmt.setString(1, usuari.getNom())
             stmt.setString(2, usuari.getNivell())
             stmt.setInt(3, usuari.getId())
@@ -164,7 +172,7 @@ object UsuariDao {
 
         // Amb la funció prepareStatement() s'eviten els possibles atacs de SQLInjection
         // 'use' tanca automàticament el PreparedStatement
-        DatabaseManager.connection.prepareStatement(sql).use { stmt ->
+        databaseConnection.prepareStatement(sql).use { stmt ->
             stmt.setInt(1, usuari.getId())
             rowCount = stmt.executeUpdate() // La funció executeUpdate serveix per a modificacions de dades INSERT, UPDATE i DELETE
         }
@@ -184,7 +192,7 @@ object UsuariDao {
 
         // Amb la funció prepareStatement() s'eviten els possibles atacs de SQLInjection
         // 'use' tanca automàticament el PreparedStatement
-        DatabaseManager.connection.prepareStatement(sql).use { stmt ->
+        databaseConnection.prepareStatement(sql).use { stmt ->
             rowCount = stmt.executeUpdate() // La funció executeUpdate serveix per a modificacions de dades INSERT, UPDATE i DELETE
         }
 

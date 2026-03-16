@@ -8,25 +8,31 @@
       <jdbc-url>jdbc:sqlite:$USER_HOME$/Downloads/onepiece-arcs.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="fastf1_http_cache" uuid="148fdd89-f632-479a-b817-d1e3ab0821d8">
-      <driver-ref>sqlite.xerial</driver-ref>
+    <data-source source="LOCAL" name="Supabase" uuid="30c7463a-3914-45c4-988e-ca159ebd9c9d">
+      <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/databases/f1/cache/fastf1_http_cache.sqlite</jdbc-url>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://aws-1-eu-west-2.pooler.supabase.com:6543/postgres</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+        <property name="com.intellij.clouds.kubernetes.db.container.port" />
+      </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
+      <driver-properties>
+        <property name="sslmode" value="require" />
+      </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="nba" uuid="701a8c48-9fc7-44cf-83e3-bf24c8b0c799">
-      <driver-ref>sqlite.xerial</driver-ref>
+    <data-source source="LOCAL" name="Supabase_trans_pooler" uuid="53accf13-2b79-4c1b-9d5a-2cad83de4393">
+      <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/src/databases/nba/nba.sqlite</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="veekun-pokedex" uuid="3ec406fb-6136-4529-9d58-a77af4e50d37">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/data/veekun-pokedex.sqlite</jdbc-url>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://aws-1-eu-west-2.pooler.supabase.com:6543/postgres</jdbc-url>
+      <jdbc-additional-properties>
+        <property name="com.intellij.clouds.kubernetes.db.host.port" />
+        <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
+        <property name="com.intellij.clouds.kubernetes.db.container.port" />
+      </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
