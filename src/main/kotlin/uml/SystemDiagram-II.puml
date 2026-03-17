@@ -3,7 +3,7 @@ allowmixing
 
 left to right direction
 
-title Arquitectura Completa MVC + DAO
+title Arquitectura Completa MVC + DAO (Fallback & Sync)
 
 actor "Usuari" as User
 
@@ -34,7 +34,27 @@ package "Controller" {
     }
 }
 
-package "Model & Interface" {
+package "Model" {
+    class Usuari {
+        -id : Int
+        -nom : String
+        -nivell : NivellUsuari
+        --
+        +Usuari(id: Int, nom: String, nivell: NivellUsuari)
+        +getId(): Int
+        +getNom(): String
+        +getNivell(): NivellUsuari
+        +toString(): String
+    }
+
+    enum NivellUsuari {
+        DOCENT, COORDINADOR, DIRECTIU
+        --
+        +fromString(valor: String): NivellUsuari
+    }
+}
+
+package "DAO" {
     interface IUsuariDao <<interface>> {
         +getAllUsers() : List<Usuari>
         +getUserIdList() : List<Int>
@@ -45,26 +65,8 @@ package "Model & Interface" {
         +deleteAll() : Int
     }
 
-    class Usuari {
-        -id : Int
-        -nom : String
-        -nivell : NivellUsuari
-        --
-        +getId(): Int
-        +getNom(): String
-        +getNivell(): NivellUsuari
-    }
-
-    enum NivellUsuari {
-        DOCENT, COORDINADOR, DIRECTIU
-        --
-        +fromString(valor: String): NivellUsuari
-    }
-}
-
-package "DAO Implementation" {
     class UsuariDao {
-        -connection: Connection
+        -databaseConnection: Connection
         --
         +UsuariDao(c: Connection)
         +getAllUsers() : List<Usuari>
@@ -79,38 +81,59 @@ package "DAO Implementation" {
 
 package "Database" {
 
+    class ConnectionManager << (O, #A9E4FF) >> {
+        -connection : Connection
+        -isCloud : Boolean
+        --
+        +getConnection() : Connection
+        +isUsingCloud() : Boolean
+    }
+
+    class DBSyncManager << (O, #A9E4FF) >> {
+        +syncDatabases()
+    }
+
     class DatabaseManager << (O, #A9E4FF) >> {
-        +connection : Connection
+        -DATABASE_FILE: String
+        +getConn(): Connection
     }
 
     class SupabaseManager << (O, #A9E4FF) >> {
-        +connection : Connection
-        --
         -URL: String
         -USER: String
         -PASS: String
         -PORT: String
+        - connection: Connection
+        --
+        +getConn() : Connection
     }
 }
 
 database "SQLite (.db)" as SQLite
 database "Supabase (Postgres)" as Supabase
-
 file "secrets.properties" as secrets
 
 ' Relacions
 User --> TerminalView : interactua
 TerminalView --> UsuariController : crida accions
-UsuariController o-- IUsuariDao : injecció
+UsuariController o-- IUsuariDao : injecció (rebut per constructor)
 
 UsuariDao ..|> IUsuariDao : implementa
 UsuariDao --> Usuari : crea
 Usuari "n" *-- "1" NivellUsuari : és
 
+' La injecció de la connexió al DAO
+UsuariDao o-- "ConnectionManager" : rep per injecció
+
 DatabaseManager --> SQLite
 SupabaseManager --> Supabase
 SupabaseManager ..> secrets : llegeix dades
-UsuariDao --> SupabaseManager : rep connexió
-UsuariDao --> DatabaseManager : rep connexió
 
+ConnectionManager --> SupabaseManager : demana connexió remot
+ConnectionManager --> DatabaseManager : demana connexió local
+DBSyncManager ..> ConnectionManager : usa per obtenir l'estat actual
+DBSyncManager ..> UsuariDao : usa instàncies (local/remot) per sincronitzar
+
+' El Main (implícit) usaria el ConnectionManager per crear el DAO
+' que després s'injecta al Controller.
 @enduml

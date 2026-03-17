@@ -10,7 +10,6 @@ import java.util.Properties
  * @author RIS
  */
 object SupabaseManager {
-
     /*
     Agafem les dades de configuració de la base de dades remota usant les variables de sistema creades pel build.gradle.kts
     en el moment de compilació del projecte.
@@ -23,7 +22,7 @@ object SupabaseManager {
     private val PORT = System.getProperty("SUPABASE_PORT")
 
     // La connexió es crea només un cop, quan es crida per primer cop
-    public val connection: Connection by lazy {
+    private val connection: Connection by lazy {
         val props = Properties().apply {
             setProperty("user", USER)
             setProperty("password", PASS)
@@ -31,5 +30,9 @@ object SupabaseManager {
             setProperty("sslmode", "require")
         }
         DriverManager.getConnection(URL, props)
+    }
+
+    public fun getConn(): Connection{
+        return this.connection
     }
 }

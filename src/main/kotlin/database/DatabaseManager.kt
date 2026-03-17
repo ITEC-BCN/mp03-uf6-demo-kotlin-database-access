@@ -12,7 +12,11 @@ object DatabaseManager {
     private const val DATABASE_FILE = "data/usuaris.db"
 
     // La connexió es crea només un cop, quan es crida per primer cop
-    public val connection: Connection by lazy {
+    private val connection: Connection by lazy {
         DriverManager.getConnection("jdbc:sqlite:$DATABASE_FILE")
+    }
+
+    public fun getConn(): Connection{
+        return this.connection
     }
 }
