@@ -8,10 +8,10 @@ import dao.UsuariDao
  */
 object DBSyncManager {
     fun syncDatabases() {
-        val localDao = UsuariDao(DatabaseManager.getConn())
-        val remoteDao = UsuariDao(SupabaseManager.getConn())
-
         try {
+            val localDao = UsuariDao(DatabaseManager.getConn())
+            val remoteDao = UsuariDao(SupabaseManager.getConn())
+
             val remoteUsers = remoteDao.getAllUsers()
             // Purga local i actualitza amb dades remotes
             localDao.deleteAll()
